@@ -12,7 +12,8 @@ A lightweight, native macOS application built with **SwiftUI**, **AppKit**, and 
   - **Aspect Ratio Lock / Unlock** toggle (re-snaps to exact window aspect ratio when locked)
   - **Show / Hide Cursor** toggle in the captured stream
   - **Bring Source Window to Front** button
-- **Live Window Picker**: Previews open windows with thumbnails, dimensions, search filter, and active PiP status indicators.
+- **Menu Bar Extra (`MenuBarExtra`)**: Quick-access status bar popover with live window thumbnails, instant search filtering, one-click PiP toggle, and active PiP session badge.
+- **Live Window Picker**: Previews open windows with parallel-captured high-DPI thumbnails, dimensions, search filter, and active PiP status indicators.
 
 ## Build & Run
 
