@@ -30,6 +30,7 @@ swiftc \
     Sources/PiPWindow/Services/WindowListViewModel.swift \
     Sources/PiPWindow/UI/PiPPanelController.swift \
     Sources/PiPWindow/UI/PiPContainerView.swift \
+    Sources/PiPWindow/UI/MenuBarExtraView.swift \
     Sources/PiPWindow/UI/ContentView.swift \
     Sources/PiPWindow/PiPWindowApp.swift \
     -o "${MACOS_DIR}/${APP_NAME}"

@@ -18,7 +18,7 @@ struct PiPWindowApp: App {
     @StateObject private var viewModel = WindowListViewModel()
 
     var body: some Scene {
-        WindowGroup("PiPWindow — Select a Window") {
+        Window("PiPWindow — Select a Window", id: "main-picker") {
             ContentView(viewModel: viewModel)
         }
         .windowStyle(.titleBar)
@@ -42,5 +42,13 @@ struct PiPWindowApp: App {
                 .disabled(viewModel.activePiPControllers.isEmpty)
             }
         }
+
+        MenuBarExtra(
+            "PiPWindow",
+            systemImage: viewModel.activePiPControllers.isEmpty ? "pip" : "pip.fill"
+        ) {
+            MenuBarExtraView(viewModel: viewModel)
+        }
+        .menuBarExtraStyle(.window)
     }
 }

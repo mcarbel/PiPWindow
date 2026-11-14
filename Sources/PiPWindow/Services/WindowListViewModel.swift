@@ -125,21 +125,35 @@ final class WindowListViewModel: ObservableObject {
 
     @available(macOS 14.0, *)
     private func loadThumbnails(for items: [WindowItem]) async {
-        for item in items {
-            let filter = SCContentFilter(desktopIndependentWindow: item.scWindow)
-            let config = SCStreamConfiguration()
-            let aspect = max(item.aspectRatio, 0.3)
-            config.width = 360
-            config.height = max(Int(360.0 / aspect), 120)
-            config.scalesToFit = true
-            config.showsCursor = false
+        await withTaskGroup(of: (CGWindowID, NSImage?).self) { group in
+            for item in items {
+                group.addTask {
+                    let filter = SCContentFilter(desktopIndependentWindow: item.scWindow)
+                    let config = SCStreamConfiguration()
+                    let aspect = max(item.aspectRatio, 0.3)
+                    config.width = 400
+                    config.height = max(Int(400.0 / aspect), 120)
+                    config.scalesToFit = true
+                    config.showsCursor = false
 
-            if let cgImage = try? await SCScreenshotManager.captureImage(
-                contentFilter: filter,
-                configuration: config
-            ) {
-                let nsImage = NSImage(cgImage: cgImage, size: NSSize(width: cgImage.width, height: cgImage.height))
-                self.thumbnails[item.id] = nsImage
+                    if let cgImage = try? await SCScreenshotManager.captureImage(
+                        contentFilter: filter,
+                        configuration: config
+                    ) {
+                        let nsImage = NSImage(
+                            cgImage: cgImage,
+                            size: NSSize(width: cgImage.width, height: cgImage.height)
+                        )
+                        return (item.id, nsImage)
+                    }
+                    return (item.id, nil)
+                }
+            }
+
+            for await (windowID, image) in group {
+                if let image = image {
+                    self.thumbnails[windowID] = image
+                }
             }
         }
     }
